@@ -1,0 +1,3 @@
+//GET https://us1.locationiq.com/v1/search.php?key=4422f45283ca3e&q=5065 haven pl dublin ca&format=json
+
+Get http://localhost:52201/api/Tour
