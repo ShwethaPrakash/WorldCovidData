@@ -1,0 +1,32 @@
+
+.carousel-inner
+{
+    text-align:center;
+    width:250;
+    height:250;
+}
+
+input
+{
+    width: 200;
+}
+
+#covidData
+{
+    height: 300;
+    width: 300;
+}
+
+html, body { 
+    background: url(./imgs/bgimg.jpg) ;
+    background-color: darkslategrey; 
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+  }
+
+#outerDiv
+{
+
+}

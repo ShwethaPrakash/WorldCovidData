@@ -1,0 +1,8 @@
+{
+    "appService.zipIgnorePattern": [
+        "node_modules{,/**}",
+        ".vscode{,/**}"
+    ],
+    "appService.defaultWebAppToDeploy": "/subscriptions/a897c6e6-5655-4e8e-a18d-cf33395f8adb/resourceGroups/appsvc_linux_centralus/providers/Microsoft.Web/sites/HowsTheWeather",
+    "appService.deploySubpath": ""
+}

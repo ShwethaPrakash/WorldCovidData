@@ -1,9 +1,11 @@
 import React from 'react'
-import DateTime from 'react-datetime' 
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faSearch, faBroom, faLocationArrow, faMapPin, faCloudSun } from '@fortawesome/free-solid-svg-icons'
 import moment from 'moment'
 import '../node_modules/bootstrap/dist/css/bootstrap.min.css'
 import Carousel from 'react-bootstrap/Carousel' 
-import Clock from './Clock.js'
+import './weather.css'
+import CovidService from './Covid'
 
 export default class  Weather extends React.Component
 {
@@ -17,8 +19,6 @@ export default class  Weather extends React.Component
     }
      
     getData(address) {
-
-        console.log(address)
         // create a new XMLHttpRequest
         var xhr = new XMLHttpRequest()
     
@@ -26,36 +26,32 @@ export default class  Weather extends React.Component
         xhr.addEventListener('load', () => {
           // update the state of the component with the result here
           const json = JSON.parse(xhr.responseText);
-          console.log(json)
             if(json.length > 1)
             {
                 this.setState({addressLength:json.length, addressList:json});
             }
-            else if(json.length == 1)
+            else if(json.length === 1)
             {
                 this.OnAddressClick(json[0]);
             }        
           });
         const url = 'https://us1.locationiq.com/v1/search.php?key=4422f45283ca3e&q='+address+'&format=json';
-        console.log(url)
         // open the request with the verb and the url
         xhr.open('GET',url )
         // send the request
         xhr.send()
       }
 
-      OnSubmitClick()
-      {
-          const address = document.getElementById('address').value;
-          const weatherData = this.getData(address);
-          console.log("On Submit click "+weatherData);
-      }
+        OnSubmitClick()
+        {
+            const address = document.getElementById('address').value;
+            const weatherData = this.getData(address);
+        }
 
       OnClear()
       {
         this.setState({long:'', lat:'', weather:'',loaded:false, addressLength:0, addressList:null});
         document.getElementById('address').value = '';
-
       }
 
       FormatDate(currentDate,daystoAdd)
@@ -66,14 +62,12 @@ export default class  Weather extends React.Component
 
       OnAddressClick(address)
       {
-
-        console.log("inside OnAddressClick : Loaded value"+this.state.loaded)
           let lat = address.lat;
           let lon = address.lon;
           var weatherReq = new XMLHttpRequest();
           weatherReq.addEventListener('load',()=>{
                 let data = JSON.parse(weatherReq.responseText);  
-                this.setState({loaded:true,weather:data });  
+                this.setState({loaded:true,weather:data, address: address });  
             });
 
          const weatherurl  = "https://api.darksky.net/forecast/dfce2fd1c0bc3b83de117d49f2cd1121/"+lat+','+lon;
@@ -85,34 +79,37 @@ export default class  Weather extends React.Component
 
       CreateAddressList()
       {
-        console.log("inside CreateAddressList : Loaded value"+this.state.loaded)
-        console.log("Address List")
-        console.log(this.state.addressList);
           return(
-                <div className="container ">
-                    <ul>
+                <div className="container">
+                    <div className="row">
+                        <div className="col">
+                    <p className="lead"> Did you mean any of the below address ?? </p>
+                    <ul className="list-unstyled">
                         {this.state.addressList.map((address,index)=>(
-                         <li> <a href="#" className="font-italic text-decoration-none text-justify" onClick={this.OnAddressClick.bind(this,address)} >{address.display_name}</a></li>
+                        <li>
+                         <a href="#"  onClick={this.OnAddressClick.bind(this,address)}> <FontAwesomeIcon icon={faLocationArrow} /> <small> {address.display_name} </small></a>
+                         </li>  
                         ))}
                     </ul>
+                    </div>
+                    </div>
                 </div>
             )
       }
 
-      CreateWeeklyForecast(weatherJson)
+      CreateWeeklyForecast(weatherJson, address)
       {
-          console.log("inside CreateWeeklyForecast")
-          console.log(weatherJson)
           const weatherData = weatherJson;
-          console.log(weatherData.daily.data)
           let currentDate = new Date();
 
           return(
-            <div className="col bg-success">
-                <Carousel>
+            <div className="">
+                
+                <p  > <FontAwesomeIcon icon={faMapPin} /> <i> {address.display_name} </i> </p>
+                <Carousel className="justify-center">
                     {weatherData.daily.data.map((dailyweather, index)=>
                     (
-                        <Carousel.Item className="justify-center">
+                        <Carousel.Item >
                             <div className="d-block w-100">
                                 <h3 >
                                     {moment().add(index,'days').format('MMM Do YYYY')}
@@ -139,39 +136,35 @@ export default class  Weather extends React.Component
     render()
     {
         return(
-           <div>
-               <nav class=" navbar bg-dark navbar-dark navbar-expand-sm">
-                <div class="container">
-                        <a href="#" class="navbar-brand">
-                            <img src={require("./imgs/weatherlogo.png")} style={{width:40}} />
-                        </a>
-                        <div class="navbar-nav justify-content-end">
-                            <a class="nav-link nav-item active" href="#">Home</a>
-                            <a class="nav-link nav-item" href="#">About</a>
-                            <a class="nav-link nav-item" href="#">Contact</a>
+            <div className="container" >
+                <div style={{"height":50}}>
+
+                </div>
+                <div className="row justify-content-around">
+                    <div className="col-4 text-dark bg-white border border-dark rounded" style={{"opacity":0.5}} >
+                        <div className="" >
+                            <h4 className=""> <FontAwesomeIcon icon={faCloudSun}></FontAwesomeIcon> Weather Forecast</h4>
+                                <input type="address" id="address" aria-describedby="addressHelp"
+                                    placeholder="Enter Address">
+                                </input> 
+                                <button type="submit" className="btn btn-link d-inline" onClick={this.OnSubmitClick}>
+                                    <FontAwesomeIcon icon={faSearch} className="far fa-search" />
+                                </button>
+                                <button type="submit" className="btn btn-light d-inline" onClick={this.OnClear}>
+                                    <FontAwesomeIcon icon={faBroom} />
+                                </button>    
+                        </div>  
+                        <div>
+                            {this.state.addressLength > 1 ? this.CreateAddressList():null}
                         </div>
                     </div>
-               </nav>
-
-            <div className="container" style={{"padding-top": 10 }}>
-                <div className="row">
-                    <div className="col">
-                        <div className="form-group">
-                            <input type="address" class="form-control" id="address" aria-describedby="addressHelp" placeholder="Enter Address"></input>
-                        </div>  
-                        <button type="submit" class="btn btn-primary" onClick={this.OnSubmitClick}>Forecast</button> 
-
-                        <button type="submit" class="btn btn-light" onClick={this.OnClear}>Clear</button>          
+                    <div className="col-4 bg-white  border border-dark rounded" style={{"height":300, "opacity":0.5}}>
+                        {this.state.loaded ? this.CreateWeeklyForecast(this.state.weather, this.state.address):null}   
                     </div>
-                    <div className="col">
-                        {this.state.addressLength > 1 ? this.CreateAddressList():null}
+                    <div id="covidData" className="col-3 bg-white  border border-dark rounded pull-right" style={{"height":300, "opacity":0.5}}>
+                        <CovidService></CovidService>
                     </div>
-                    {this.state.loaded ? this.CreateWeeklyForecast(this.state.weather):null}   
                 </div>
-               
-                        
-                
-            </div>
             </div>
         )
     }
