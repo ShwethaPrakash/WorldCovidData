@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import Globe from 'react-globe.gl';
 import '../node_modules/bootstrap/dist/css/bootstrap.min.css'
-import covid from "./CovidData.json"
 import countries  from './contries.json'
 
 const GlobalData = ((props)=>{
@@ -27,12 +26,13 @@ const GlobalData = ((props)=>{
         // create a new XMLHttpRequest
         var xhr = new XMLHttpRequest()
         let data = [];
+        let newCountriesData = []
         // get a callback when the server responds
         xhr.addEventListener('load', () => {
             
           // update the state of the component with the result here
             data = JSON.parse(xhr.responseText);
-            let newCountriesData = MergeData(data);
+            newCountriesData = MergeData(data);
             setCovidData(newCountriesData);
           });
         const url = 'https://coronavirus-19-api.herokuapp.com/countries';
@@ -41,7 +41,7 @@ const GlobalData = ((props)=>{
         // send the request
         xhr.send()
          
-        return covid;
+        return newCountriesData;
     }
 
     useEffect(() => {
@@ -82,8 +82,13 @@ const GlobalData = ((props)=>{
                   <br> Todays Deaths : ${d.todayDeaths}`  }}
                     pointLat = "latitude"
                     pointLng = "longitude"
-                    pointColor = {()=>'#ffffaa'}
+                    pointColor = {(d)=> d.deaths>1000 ? '#8B0000': '#ffffaa'}
                     pointAltitude = {d => d.cases * 0.0001}
+
+                    labelsData = {covidData}
+                    labelLat = "latitude"
+                    labelLng = "longitude"
+                    labelText = {(d)=> d.country}
     />
     )
 })
