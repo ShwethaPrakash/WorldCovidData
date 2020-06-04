@@ -82,8 +82,8 @@ const GlobalData = ((props)=>{
                   <br> Todays Deaths : ${d.todayDeaths}`  }}
                     pointLat = "latitude"
                     pointLng = "longitude"
-                    pointColor = {(d)=> d.deaths>1000 ? '#8B0000': '#ffffaa'}
-                    pointAltitude = {d => d.cases * 0.0001}
+                    pointColor = {(d)=> d.deaths>10000 ? '#8B0000': '#ffffaa'}
+                    pointAltitude = {d => d.cases / 10000}
 
                     labelsData = {covidData}
                     labelLat = "latitude"

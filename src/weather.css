@@ -18,15 +18,56 @@ input
 }
 
 html, body { 
-    background: url(./imgs/bgimg.jpg) ;
-    background-color: darkslategrey; 
+   background-image: url("./imgs/bg.jpeg");
+   /* background-color: black; */
     -webkit-background-size: cover;
     -moz-background-size: cover;
     -o-background-size: cover;
     background-size: cover;
   }
 
-#outerDiv
-{
+  a {
+    color: black;
+  }
 
+.stats
+{
+    
+    padding: .5rem;
+    border-radius: 5px;
+    display: flex;
+    flex-direction: column;
+    margin-left: .25rem;
+    margin-right: .25rem;
+    margin-bottom: .5rem;
+    width: 100%;
+}
+.confirmedStats
+{
+    background: rgba(255,7,58,.12549);
+    color: #ff073a;
+}
+.activeStats
+{
+    background:rgba(26, 118, 218, 0.063);
+    color: cornflowerblue;
+}
+.recoveredStats
+{
+    background:rgba(26, 218, 138, 0.103);
+    color:darkgreen;
+}
+.deathsStats
+{
+    background:gray;
+    color:black;
+}
+
+.dataStats
+{
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    height: 5rem;
+    position: relative;
 }

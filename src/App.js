@@ -4,6 +4,6 @@ import Weather from './weather'
 import GlobalData from './globe'
 
 ReactDOM.render(
-  <Weather />,
+  <GlobalData />,
   document.getElementById('root')
 );
