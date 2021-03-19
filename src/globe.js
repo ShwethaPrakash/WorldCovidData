@@ -82,23 +82,13 @@ const GlobalData = ((props)=>{
                   <br> Todays Deaths : ${d.todayDeaths}`  }}
                     pointLat = "latitude"
                     pointLng = "longitude"
-                    pointColor = {(d)=> d.deaths>10000000 ? '#8B0000': '#ffffaa'}
-                    pointAltitude = {d => d.cases / 10000000}
+                    pointColor = {(d)=> d.cases>200000 ? '#8B0000': '#ffffaa'}
+                    pointAltitude = {d => d.cases / 20000000}
 
                     labelsData = {covidData}
                     labelLat = "latitude"
                     labelLng = "longitude"
                     labelText = {(d)=> d.country}
-
-
-                    hexBinPointsData={covidData}
-      hexBinPointWeight="pop"
-      hexAltitude={d => d.sumWeight * 6e-8}
-      hexBinResolution={4}
-      hexTopColor={d => weightColor(d.sumWeight)}
-      hexSideColor={d => weightColor(d.sumWeight)}
-      hexBinMerge={true}
-      enablePointerInteraction={false}
     />
     )
 })
